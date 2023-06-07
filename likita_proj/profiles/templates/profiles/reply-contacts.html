@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<article>
+    
+    <div class="reply-contacts">
+        <div>
+            <form action="" method="post" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <h3>Reply Enquiries</h3>
+                <ul>
+                    {% for field in form %}
+                    <li>
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                    </li>
+                    {% endfor %}
+                    <li>
+                        <input type="submit" value="Send Replies">
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div >
+            <div>
+                <h3>{{contact.name}}</h3>
+                <strong>{{contact.email}} </strong>
+            </div>
+            <div>
+                <p>{{contact.message}}</p>
+            </div>
+        </div>
+    </div>
+</article>
+
+{% endblock content %}

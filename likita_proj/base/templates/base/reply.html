@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<article class="reply-form-container">
+    <div>
+        <p>
+           Comment: {{comment.body}}
+        </p>
+    </div>
+    <form action="" method="post">
+
+        {% csrf_token %}
+        <ul>
+        {% for field in form %}
+
+            <li>
+              <label for="id_field">
+                {{field.label}}
+              </label>
+                {{field}}
+            </li>
+        {% endfor %}
+
+            <li>
+                <input type="submit" value="Send Reply">
+            </li>
+        </ul>
+        
+    </form>
+</article>
+
+{% endblock content %}

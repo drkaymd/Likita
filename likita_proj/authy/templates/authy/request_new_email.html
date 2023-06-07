@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<article>
+    <form method='POST' >
+        {% csrf_token %}
+        <h4>Request new email verification link</h4>
+        <ul>
+            <li>
+                {{form.as_p}}
+            </li>
+            <li>
+            <input type="submit" value="Request New Email">        
+            </li>
+        </ul>
+    </form>
+</article>
+
+{% endblock content %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<article>  
+        
+    <div id="login-register-form">
+        {% if page == 'register' %}
+        <div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <h3>Register</h3>
+
+            {% for field in form %}
+                <ul>
+                    <li>
+                       <label for="">
+                        {{field.label}}:
+                       </label> 
+                       {{field}}  
+                    </li>
+                    <li></li>
+                </ul>
+            {% endfor %}
+                <ul>
+                    <li>
+                        <input type="submit" value="Sign Up" />
+                        <p>I am registered <a href="{% url 'login' %}" style="text-transform: uppercase">Login</a></p>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        {% else %}
+        <div>
+            <form action="" method="post" class="forms">
+                {% csrf_token %}
+                
+                <h3>Login</h3>
+                <ul>
+                  <li>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" />
+                  </li>
+                  <li>
+                    <label for="pwd">Password:</label>
+                    <input type="password" name="password" id="pwd" />
+                  </li>
+                  <li>
+                    <input type="submit" value="Login" />
+                    <p>I am not registered <a href="{% url 'register' %}" style="text-transform: uppercase">Sign Up</a></p>
+                  </li>
+                </ul>
+              </form>
+        </div>
+        {% endif %}
+    </div>
+</article>
+
+
+{% endblock content %}

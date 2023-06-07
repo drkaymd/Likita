@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<aside>
+  <div id="chat-box">
+    <h3>Talk with dr</h3>
+    <div class="conversation">
+      <ul class="messages-list">
+        <li class="message received">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">
+              Hi {{request.user.username}}, I am your AI Chatbot, You can ask me
+              anything!
+            </div>
+          </div>
+        </li>
+
+        {% for chat in chats %} {% if chat.user == request.user %}
+
+        <li class="message sent">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>You</b>
+            </div>
+            <div class="message-content">{{chat.message}}</div>
+          </div>
+        </li>
+
+        <li class="message received">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">{{chat.response}}</div>
+          </div>
+        </li>
+
+        {% endif %} {% endfor %}
+      </ul>
+    </div>
+
+    <form action="" class="message-form" method="POST">
+      {% csrf_token %}
+
+      <ul>
+        <li>
+          <input
+            type="text"
+            class="message-input"
+            name="chat"
+            id="chat"
+            aria-label="chat-box"
+            placeholder="enter your conversation"
+          />
+        </li>
+        <li>
+          <input type="submit" value="Send" />
+        </li>
+      </ul>
+    </form>
+    <small>Powered by drkaymd</small>
+  </div>
+</aside>
+<div class="chat"></div>
+
+
+{% endblock content %}
+{% comment %} <script src="{% static 'js/chatbot.js' %}"></script> {% endcomment %}
+

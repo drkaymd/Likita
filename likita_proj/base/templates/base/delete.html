@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article>
+    <div class="delete-box">
+        <h1>Are You sure You want to delete {{post.topic.title}} ?</h1>
+        
+        <div class="box">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Confirm">
+            </form>
+            <a href="{{request.META.HTTP_REFERER}}"><input type="submit" value="Go Back" class="go-back"></a>            
+        </div>
+    </div>
+</article>
+
+{% endblock content %}

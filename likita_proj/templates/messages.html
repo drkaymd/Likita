@@ -1,0 +1,18 @@
+<div style='position: relative; top:50px'>
+    {% if messages %}
+        
+    <ul class="messages">
+        {% for message in messages %}
+        
+        <li class="{{message.tags}}">
+    
+            {{message | safe}}
+            <a href="" class="close"><i class="fa fa-multiply"></i></a>
+    
+        </li>
+        
+        {% endfor %}
+    </ul>
+    
+    {% endif %}     
+</div>

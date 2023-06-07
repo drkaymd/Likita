@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<article>
+    <div class="expired-email-link" style="text-align: center" >
+        <h3 style="color: green; font-size: 18; padding: 1rem; text-align: center;">Dear {{inactive_user.username}}</h3>
+        <p style="color: blue; text-align: center;">This Link has expired</p>
+    </div>
+    <div>
+        <h2 style="text-align: center; color: blue;">
+            <a href="{% url 'request-new-link-from-email' %}">Request New Link for your accoutn activation</a>
+        </h2>
+    </div>
+</article>
+
+{% endblock content %}

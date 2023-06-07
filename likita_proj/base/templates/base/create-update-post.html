@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<article class="create-update">
+    {% if page == 'create-post' %}
+   <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Create Post</h3>
+
+        <ul>
+           <li>
+            <label for="topic">Topic:</label>
+            <input type="text" name="topic" id="topic" list='topic-list' value={{post.topic.title}}>
+            <datalist id="topic-list">
+                <select name="" id="topic">
+                {% for topic in topics %}
+                    <option value="{{topic.title}}">{{topic.title}}</option>
+                {% endfor %}
+                </select>
+            </datalist>
+           </li>      
+            <li>
+                <label for="id_heading">Heading:</label>
+                {{form.heading}}
+            </li>
+            <li>
+                <label for="id_body">Body:</label>
+                {{form.body}}
+            </li>
+            <li>
+                <label for="id_image">Image:</label>
+                {{form.image}}
+            </li>
+
+            <li>
+                <input type="submit" value="Create Post">
+            </li>
+        </ul>
+    
+   </form>
+
+   {% else %}
+
+   <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Update Post</h3>
+
+        <ul>
+           <li>
+            <label for="topic">Topic:</label>
+            <input type="text" name="topic" id="topic" list='topic-list' value="{{post.topic.title}}">
+            <datalist id="topic-list">
+                <select name="" id="topic">
+                    {% for topic in topics %}
+                    <option value="{{topic.title}}">{{topic.title}}</option>
+                    {% endfor %}
+                </select>
+            </datalist>
+           </li>      
+            <li>
+                <label for="id_heading">Heading:</label>
+                {{form.heading}}
+            </li>
+            <li>
+                <label for="id_body">Body:</label>
+                {{form.body}}
+            </li>
+            <li>
+                <label for="id_image">Image:</label>
+                {{form.image}}
+            </li>
+
+            <li>
+                <input type="submit" value="Update Post">
+            </li>
+        </ul>
+    
+   </form>
+   {% endif %}
+</article>
+
+
+
+{% endblock content %}

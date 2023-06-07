@@ -1,0 +1,14 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="main-container">
+  <div>{% include 'base/hero.html' %}</div>
+  <div>{% include 'base/feeds.html' %}</div>
+  <div>{% include 'base/contact.html' %}</div>
+</div> 
+<script src="{% static 'js/scripts.js' %}"></script>
+{% endblock content %}

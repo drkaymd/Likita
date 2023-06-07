@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<article>
+    <div class="new-email" style="text-align: center" >
+        <h3 style="color: green; font-size: 18; padding: 1rem; text-align: center;">Dear {{inactive_user.username}}</h3>
+        <p style="color: blue; text-align: center;">New activation link has been succesfully sent to {{inactive_user.email}}</p>
+    </div>
+</article>
+
+{% endblock content %}

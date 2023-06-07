@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class='profile'>
+  <article>
+    <div class="profile-container">
+      <div class="left-side col col-3">
+        <div class="credentials">
+          <h1>Personal Credentials</h1>
+          <p><strong> Name: {{user_profile.name}} </strong></p>
+          <p><strong> Age: {{user_profile.date_of_birth | timesince}} </strong></p>
+          <p><strong> Gender: {{user_profile.gender}} </strong></p>
+          <p><strong> Location: {{user_profile.location}} </strong></p>
+          <p><strong> Date of Birth: {{user_profile.date_of_birth}} </strong></p>
+        </div>
+        <div class="bios">
+          <h1>Bio</h1>
+          {% if not user_profile.bio %}
+          {% else %}
+          <p><strong>{{user_profile.bio}}</strong></p>
+          {% endif %}
+
+        </div>
+      </div>
+      <div class="right-side col col-9">
+        <div class="image">
+          <img src="{{user_profile.avatar.url}}" alt="" />
+        </div>
+        {% if not user_profile.profession %}
+        {% else %}
+        <p><small>I am a {{user_profile.profession}}</small></p>
+        {% endif %}
+
+
+        <div class="edit-btn">
+          {% if request.user.username == user_profile.username or request.user.is_superuser %}
+          <a href="{% url 'settings' user_profile.username %}">
+            <button type="button">Edit Profile</button></a
+          >
+          <a href="{% url 'create-post' %}"><button>Create Post</button></a>
+          {% endif %}
+            {% if request.user.is_superuser %}
+          <a href="{% url 'contact' %}"><button>Reply Contacts</button></a>
+          {% endif %}
+        </div>
+      </div>
+    </div> 
+  </article>
+
+  <article>
+    {% if not user_profile.comment_set.all %}
+    <h1 style="text-align: center;">No Conversations</h1>
+    {% else %}
+    <h1 style="text-align: center;">Your Conversations</h1>
+    {% for comments in user_profile.comment_set.all %}
+
+    <div class="profile-conversation">
+
+      <div class="conversation-comment">
+        <h4>Comments: </h2>
+          <a href="{% url 'post' comments.post.id %}">
+            <h3>Post: {{comments.post.topic.title}}</h3>
+          </a>
+        <p><strong><a href="{% url 'profile' comments.sender.username %}">@{{comments.sender.username}}</a></strong> : {{comments.body}}</p>
+     </div>
+
+     
+      <div class="conversation-replies">
+        {% for replies in comments.commentreply_set.all %}
+        <h4>Replied: {{replies.created_at | timesince}} ago</h4>
+        <p><strong>@{{replies.replier.username}}</strong> : {{replies.body}}</p>
+        {% endfor %}
+      </div>
+
+    </div>
+    {% endfor %}
+
+    {% endif %}
+
+  </article>
+</section>
+
+ {% endblock content %}

@@ -1,0 +1,86 @@
+{% load static %}
+
+<article class="feeds">
+
+    <div class="hamburger topic-hamburger">
+        <div class="bar topic-bar"></div>
+        <div class="bar topic-bar"></div>
+        <div class="bar topic-bar"></div>
+    </div>
+
+    <div class="topics" id="topics">
+        <h3>
+            <a href="{% url 'home' %}">All</a>
+            <span>{{posts.all.count}}</span>
+        </h3>
+        {% for topic in topics %}
+        <h3>
+            <a href="{% url 'home' %}?q={{topic.title}}">{{topic.title}} </a> 
+            <span>{{topic.post_set.count}}</span>
+         </h3>
+        {% endfor %}
+       
+    </div>
+   
+    <div class="posts">
+        <form action="" method="get" id="search-form">
+            <input type="search" name="q" id="" aria-label="search" placeholder="Search Topics">
+            <input type="submit" value="Search">
+            <button type="submit" class="mobile-search">
+            <i class="fa fa-search" role="submit"></i>
+            </button>
+        </form>
+        {% for post in posts %}
+       <div class="post post1">
+        <h3>{{post.topic.title.upper}} : <span>{{post.heading}}</span></h3>
+        <div class="image-box">
+            <a href="{{post.image.url}}">
+                <img src="{{post.image.url}}" alt="" loading="lazy">
+                <i class="fa fa-multiply minimize"></i>
+            </a>
+        </div>
+        <p>
+           {{post.body | truncatewords:30}}
+           <span class="read-more" >
+           <a href="{% url 'post' post.id %}" > <strong> Read More </strong></a>
+           </span>
+        </p>
+        
+        <div class="post-bottom">
+           <a href="{% url 'liked-post' %}?q={{post.id}}">
+            <h4>
+                {% if post.no_of_liked_post == 0 %}
+                <span>No Likes</span><i class="fa fa-thumbs-up"></i>    
+                {% elif post.no_of_liked_post == 1 %}
+                <span>Liked by {{post.no_of_liked_post}} person</span><i class="fa fa-thumbs-up"></i>
+                {% else %}
+                <span>Liked by {{post.no_of_liked_post}} people</span><i class="fa fa-thumbs-up"></i>
+                {% endif %}
+            </h4>
+           </a>
+            
+            <div>
+                <small>Date Posted:{{post.created_at | timesince}} ago</small>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                    <a style=" color: #8BC34A;" href="{% url 'profile' post.owner.username %}">@{{post.owner.username}}</a>
+                    <img src="{{post.owner.avatar.url}}" alt="" width="40" height='40'>
+                </div>
+                {% if request.user.username == post.owner.username or request.user.is_superuser %}
+               <div class="edit-delete">
+                <a href="{% url 'delete-post' post.id %}"> <h4 class="delete">Delete <i class="fa fa-multiply"></i></h4></a>
+               <a href="{% url 'update-post' post.id %}"> <h4 class="edit">Edit <i class="fa-solid fa-pen"></i></h4></a>
+               </div>
+               <div class="edit-delete-menu">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+                {% endif %}
+            </div>
+            
+        </div>
+       </div>
+       {% endfor %}
+    </div>
+
+</article>

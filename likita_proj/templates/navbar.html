@@ -1,0 +1,56 @@
+{% load static %}
+<header>
+    <div class="navbar">
+        <a href="{% url 'home' %}" class="nav-brand">likita</a>
+        <ul class="menu">
+            <ul class="menu-item">
+                <li class="nav-items"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                <li class="nav-items"><a href="" class="nav-link">About</a></li>
+                <li class="nav-items"><a href="{% url 'gallery' %}" class="nav-link">Gallery</a></li>
+                <li class="nav-items btn btn-header"><a href="" class="nav-link">Book an appointment</a></li>
+            </ul>
+            <ul class="menu-item">
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'profile' request.user.username %}"><img src="{{request.user.avatar.url}}" alt="" width="30" height="30"></a> </li>
+                <li><a href="{% url 'profile' request.user.username %}"> {{request.user.name}}</a> </li>
+                <ul class="hide-wrapper">
+                <li class="nav-items hide"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                <li class="nav-items hide"><a href="{% url 'settings' request.user.username %}" class="nav-link">Settings</a></li>
+                </ul>
+                <li class="nav-items"><li class="nav-link"><i class="fa fa-caret-down"></i></li></li>
+
+                {% else %}
+                <li class="nav-items"><a href="{% url 'login' %}" class="nav-link">Sign Up/Login</a></li>
+                {% endif %}              
+            </ul>
+        </ul>
+
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <div class="head-section">
+        <div class="page-header">
+            <div class="page-logo">
+                <img src="{% static 'images/brand.png' %}" alt="">
+            </div>
+            <h1>Likita.com</h1>
+        </div>
+        <div class="mode" id="mode">
+            <i class="fa-solid fa-moon" aria-hidden="true"></i>
+            <i class="fa-solid fa-sun" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="social-nav">
+        <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+        <i class="fa-brands fa-twitter"  aria-hidden="true"></i>
+        <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+
+    </div>
+</header>
+

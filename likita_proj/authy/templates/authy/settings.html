@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article class="setting-form-container">
+  <form action="" method="post" enctype="multipart/form-data">
+    <h3>settings</h3>
+
+    {% csrf_token %}
+    <div class="image" style="text-align: center">
+      <img
+        src="{{user.avatar.url}}"
+        alt=""
+        width="150"
+        height="150"
+        style="border-radius: 50%"
+      />
+    </div>
+
+    <ul>
+      {% for fields in form %}
+
+      <li>
+        <label for=""> {{fields.label}} </label>
+        {{fields}}
+      </li>
+      {% endfor %}
+      <li>
+        <input type="submit" value="Save Changes" />
+      </li>
+    </ul>
+  </form>
+</article>
+{% endblock content %}

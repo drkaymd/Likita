@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+
+<center style="font-size: 3rem; border; 1px solid #ccc; height: 4ch; text-align: center; margin-top: 50px"><a href="{% url 'home' %}">Continue</a></center>
+
+
+{% if request.user.is_superuser %}
+<article>
+    <h2 class="contact-h2">Contact Messages</h2>
+    {% for contact in contact_us  %}
+
+    <div class="contact-messages">
+        <div>
+            <h3>{{contact.name}}</h3>
+            <p><strong>{{contact.email}}</strong></p>
+            <p>{{contact.message}}</p>
+        </div>
+        <div>
+        {% if contact.replycontact_set.filter.exists  %}
+            <strong style="color: green;">Replied</strong>
+        {% else %}
+            <strong><a href="/reply-contact/{{contact.id}}">Reply</a></strong>
+        {% endif %}
+
+        </div>
+    </div>
+    {% endfor %}
+
+
+
+
+
+    {% comment %} <div>
+        <h3>Hello</h3>
+        <div>
+            {% for contact in contact_us  %}
+            <p>{{contact.name}} - {{contact.email}}</p>
+            <p>{{contact.message}}</p>
+            {% for replies in contact.replycontact_set.all %}
+            <p>{{replies.message}}</p>
+            <p>@{{replies.replier}}</p>
+            {% endfor %}
+        <a href="/reply-contact/{{contact.id}}">reply</a>
+
+            {% endfor %}
+        </div>
+    </div> {% endcomment %}
+
+</article>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+    {% include 'messages.html' %}
+
+    <main>
+        {% block content %}
+        
+        {% endblock content %}
+    </main>
+
+    {% comment %} {% include 'chat/chat.html' %} {% endcomment %}
+
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+
+</body>
+
+<script src="{% static 'js/hamburger.js' %}"></script>
+<script src="{% static 'js/mode.js' %}"></script>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/edits.js' %}"></script>
+<script src="{% static 'js/chats.js' %}"></script>
+<script src="{% static 'js/chatbot.js' %}"></script>
+
+</html>

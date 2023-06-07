@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="post-feeds">
+
+    <article class="feeds"> 
+        <div class="posts">
+           <div class="post post1">
+            <h3>{{post.heading.upper}}</h3>
+
+            <div class="image-box">
+                <a href="{{post.image.url}}">
+                    <img src="{{post.image.url}}" alt="" loading="lazy">
+                </a>
+            </div>
+            <p>
+               {{post.body}}
+            </p>
+            <div class="post-bottom">
+                <a href="{% url 'liked-post' %}?q={{post.id}}">
+                    <h4>
+                        {% if post.no_of_liked_post == 0 %}
+                        <span>No Likes</span><i class="fa fa-thumbs-up"></i>    
+                        {% elif post.no_of_liked_post == 1 %}
+                        <span>Liked by {{post.no_of_liked_post}} person</span><i class="fa fa-thumbs-up"></i>
+                        {% else %}
+                        <span>Liked by {{post.no_of_liked_post}} people</span><i class="fa fa-thumbs-up"></i>
+                        {% endif %}
+                    </h4>
+                </a>
+                
+                <div>
+                    <small>Date Posted:{{post.created_at | timesince}} ago</small>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px; color: #8BC34A;">
+                        <a style=" color: #8BC34A;" href="{% url 'profile' post.owner.username %}">@{{post.owner.username}}</a> 
+                        <img src="{{post.owner.avatar.url}}" alt="" width="40" height="40">
+                    </div>
+                    
+                    {% if request.user.username == post.owner.username or request.user.is_superuser %}
+                    <div class="edit-delete">
+                        <a href="{% url 'delete-post' post.id %}"> <h4 class="delete">Delete <i class="fa fa-multiply"></i></h4></a>
+                       <a href="{% url 'update-post' post.id %}"> <h4 class="edit">Edit <i class="fa fa-pen"></i></h4></a>
+                    </div>
+                    <div class="edit-delete-menu">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                     {% endif %}
+
+                    <a href="{{request.META.HTTP_REFERER}}">
+                    <h4 class="go-back">&larr;</h4>
+                    </a>
+                </div>
+                
+            </div>
+           </div>
+        </div>
+    
+    </article>
+
+    <article>
+        <h2 style="">Comment Section</h2>
+        <div class="comment">
+
+            <div id="form">
+                <form action="" method="post">
+                    {% csrf_token %}
+                   <ul>
+                    <li>
+                        <input type="text" name="body" id="form-control">
+                    </li>
+                    <li>
+                        <input type="submit" value="Post comment">
+                    </li>
+                   </ul>
+                   
+                </form>
+            </div>
+
+            {% for comment in post_comment %}
+           <div class="comment-box">
+                <div>
+                    <a href="{% url 'profile' comment.sender.username %}"><img src="{{comment.sender.avatar.url}}" alt="" width="30" height="30" style="border-radius:50%"></a>
+                </div>
+            <div class="user-comment">
+                <a href="{% url 'profile' comment.sender.username %}">@{{comment.sender.username}}</a> 
+                <span><small> commented {{comment.created_at| timesince}} ago</small></span>
+                <div class="comment-reply-box">
+                   <div class="comment-body">
+                    <p >
+                        {{comment.body}}
+                    </p>
+                    {% if request.user.is_superuser %}
+                    <p>
+                        <a href="{% url 'replies' comment.id %}">Reply</a>
+                    </p>
+                    {% endif %}
+                   </div>
+                   {% for reply in comment.commentreply_set.all %}
+                   <div class="reply-body">
+                    {% if reply != None %}
+                    <div>
+                    <a href="{% url 'profile' reply.replier.username %}">@{{reply.replier.username}}</a>
+                    <span> replied {{reply.created_at | timesince}} ago</span>
+                    </div>
+                    <p >
+                        {{reply.body}}
+                    </p>
+                    {% endif %}
+                   </div>
+
+                   {% endfor %}
+                </div>
+            </div>
+            
+           </div>
+            {% endfor %}
+        </div>
+    </article>
+
+
+</div>
+
+
+    {% endblock content %}
