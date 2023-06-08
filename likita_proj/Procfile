@@ -1,0 +1,1 @@
+web: gunicorn likita_proj.wsgi --log-file -
