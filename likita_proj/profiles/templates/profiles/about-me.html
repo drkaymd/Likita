@@ -1,10 +1,34 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<article>
-    <div class="about">
-        {{aboutMe.name}}
+<article class="about" id="about">
+  <div class="box-container">
+    <div class="box">
+      <div class="image">
+        <img
+          src="{% static 'images/myimage.jpg' %}"
+          alt="my image"
+          loading="lazy"
+          decoding="sync"
+        />
+      </div>
     </div>
+    <div class="content">
+      <h1 class="heading About">About <span>me</span></h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quidem harum
+        veniam vel consequatur in praesentium dolores distinctio, nulla ut?
+      </p>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi quos
+        deserunt in quaerat quibusdam provident repudiandae cupiditate ab dolore
+        itaque voluptatem, laboriosam hic distinctio fuga, expedita, obcaecati
+        id dignissimos voluptates!
+      </p>
+      <a href="#" class="btn">hire me</a>
+      <a href="" class="btn">download cv</a>
+    </div>
+  </div>
 </article>
-
 {% endblock content %}

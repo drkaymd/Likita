@@ -1,6 +1,6 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, ClearableFileInput
 from base.models import User
-from .models import ReplyContact, ContactUs
+from .models import ReplyContact, ContactUs, Subscribe, SendNewsletter
 from django import forms
 
 
@@ -24,7 +24,20 @@ class ReplyForm(ModelForm):
         model=ReplyContact
         fields = ['subject','message', 'attachment']
         
+
+class SubscribeForm(ModelForm):
+    class Meta:
+        model =  Subscribe
+        fields = ['email']
         
+        
+class NewsletterForm(ModelForm):
+    class Meta:
+        model =  SendNewsletter
+        fields = ['letter', 'attachment']
+        widgets = {
+            'attachment': ClearableFileInput(attrs={"allow_multiple_selected": True}),
+        }
         
         
 

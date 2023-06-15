@@ -23,6 +23,20 @@ def home(request):
     context={'posts': posts, 'topics': topics,}
     return render(request, 'base/home.html', context)
 
+def blog(request):
+    q =  request.GET.get('q') if request.GET.get('q') != None else ""
+    posts = Post.objects.filter(
+        Q(topic__title__icontains=q) |
+        Q(owner__username__icontains=q)|
+        Q(heading__icontains=q)|
+        Q(body__icontains=q)
+        )
+    topics = Topic.objects.all()
+        
+    context={'posts': posts, 'topics': topics,}
+    
+    return render(request, 'base/blog.html', context)
+
 
 @login_required(login_url='login')
 def create_post(request):
@@ -153,3 +167,10 @@ def reply_comment(request, pk):
         return redirect('post', pk=reply.comment.post.id)
     context={'comment': comment, 'comment_reply': comment_reply, 'form': form}
     return render(request, 'base/reply.html', context)
+
+
+def contact_us(request):
+    
+    
+    return render(request, 'base/contact_us.html' )
+    

@@ -1,19 +1,25 @@
 <article>
-    <div>
+    <div class="contact-container">
+       <div>
         <form action="contact/" method="POST">
             {% csrf_token %}
             <h3>
-                Contact
+                Contact Us
             </h3>
             <ul>
-                <li>
+                <li class="li">
+                   <p>
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name">
-                </li>
-                <li>
+                   </p>
+                   <p>
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email">
+                   </p>
                 </li>
+                {% comment %} <li>
+                    
+                </li> {% endcomment %}
                 <li>
                     <label for="subject">Subject:</label>
                     <input type="text" name="subject" id="subject">
@@ -32,16 +38,44 @@
                 </li>
             </ul>
         </form>
+       </div>
+
+        <div>
+            <div class="row">
+                <div class=" col-md-12">
+                  <div class="info-box">
+                    <i class="fa fa-location"></i>
+                    <h3>Our Address</h3>
+                    <p>No 5, Tajudeen Ogunkoya Street, Olorunsogo, Ilorin, Nigeria</p>
+                  </div>
+                </div>
+                <div class="col-1 col-md-6">
+                  <div class="info-box mt-4">
+                    <i class="fa fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>sadiqadekunle1@gmail.com<br>sadiquejemeeltech@gmail.com</p>
+                  </div>
+                </div>
+                <div class="col-2 col-md-6">
+                  <div class="info-box mt-4">
+                    <i class="fa fa-phone"></i>
+                    <h3>Call Us</h3>
+                    <p>+234 7031 254 433<br>+234 8030 465 949</p>
+                  </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="newsletter-container">
-        <form action="" method="POST">
+        <form action="subscribe/" method="POST">
             {% csrf_token %}
         <h4>Subscribe to our newsletter</h3>
         <ul>
             <li>
                 <input type="email" name="newsletter" id="" aria-label="newsletter">
             </li>
+
             <li>
                 <input type="submit" value="Submit">
             </li>

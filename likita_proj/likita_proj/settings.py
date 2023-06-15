@@ -31,7 +31,7 @@ SECRET_KEY= env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'authy.apps.AuthyConfig',
     'chat.apps.ChatConfig',
+    'clinic.apps.ClinicConfig',
     'profiles.apps.ProfilesConfig',
     'fontawesomefree',
      # add django channels
@@ -61,6 +62,9 @@ AUTH_USER_MODEL = 'base.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -177,4 +181,16 @@ VERIFICATION_SUCCESS_TEMPLATE = "authy/success.html"
 VERIFICATION_FAILED_TEMPLATE = "authy/failed.html"
 LINK_EXPIRED_TEMPLATE = 'authy/expired.html'
 NEW_EMAIL_SENT_TEMPLATE  = 'authy/new_email_sent.html'
+
+
+# Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+
+# Simplified static file serving.
+# https://pypi.org/project/whitenoise/
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 

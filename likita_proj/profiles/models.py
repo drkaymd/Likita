@@ -38,5 +38,30 @@ class ReplyContact(models.Model):
         
     def __str__(self):
         return f'{self.replier} : {self.message[:30]}'
+
+
+class Subscribe(models.Model):
+    email = models.EmailField()
+    created_at = models.DateTimeField(default=datetime.now())
+    class  Meta:
+        verbose_name_plural = 'Subscribe'
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f'{self.email}'
+
+
+class SendNewsletter(models.Model):
+    letter = models.TextField()
+    attachment = models.FileField(upload_to='newsletter-file', default='empty-profile.png')
+    sender = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    class  Meta:
+        verbose_name_plural = 'SendNewsletter'
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f'{self.letter[:50]}'
+    
     
     

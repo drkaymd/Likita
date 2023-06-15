@@ -14,6 +14,7 @@ urlpatterns = [
     path('', include('authy.urls')),
     path('', include('profiles.urls')),
     path('', include('chat.urls')),
+    path('', include('clinic.urls')),
     path('verification/', include('verify_email.urls')),
     
 ]

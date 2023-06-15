@@ -2,18 +2,29 @@ from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirec
 from django.contrib import messages
 from django.http import HttpResponse
 from django.conf import settings
+from django.core import mail
+from django.template.loader import render_to_string, get_template
+from datetime import datetime, timedelta
+
 
 from django.core.mail import EmailMessage, get_connection
 from base.models import User, Post
-from .forms import ProfileForm, ReplyForm, ContactForm
-from .models import ContactUs, ReplyContact
-
+from .forms import ProfileForm, ReplyForm, SubscribeForm,NewsletterForm
+from .models import ContactUs, ReplyContact, Subscribe, SendNewsletter
+from clinic.models import Appointment
 
 # Create your views here.
 
 def profile(request, pk):
-    user_profile = User.objects.get(username=pk)
-    # avatar = request.FILES.get('avatar')
+    user_profile = User.objects.get(username=pk)    
+    today = datetime.today()
+    minDate = today.strftime('%Y-%m-%d')
+    deltatime = today + timedelta(days=21)
+    strdeltatime = deltatime.strftime('%Y-%m-%d')
+    maxDate = strdeltatime
+    #Only show the Appointments 21 days from today
+    items = Appointment.objects.filter(day__range=[minDate, maxDate]).order_by('day', 'time')
+    appointments = Appointment.objects.filter(name=user_profile.id).order_by('day', 'time')
     form = ProfileForm(instance=user_profile)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=user_profile)
@@ -21,15 +32,17 @@ def profile(request, pk):
             form.save()
             return redirect('home')
 
-    context = {'user_profile': user_profile, 'form': form}
+    context = {
+        'user_profile': user_profile,
+        'form': form, 
+        'appointments':appointments,
+        'items':items,
+        }
     return render(request, 'profiles/profile.html', context)
 
 
-def about_me(request, pk):
-    aboutMe = User.objects.get(username=pk)
-
-    context = {'aboutMe': aboutMe}
-    return render(request, 'profiles/about-me.html', context)
+def about_me(request):
+    return render(request, 'profiles/about-me.html')
 
 
 def gallery(request):
@@ -96,8 +109,8 @@ def reply_contacts(request, pk):
             except ArithmeticError as aex:
                 return HttpResponse('Invalid header found')
             return HttpResponseRedirect('/mail/thanks/')
-        # else:
-        #     return HttpResponse('Make sure all fields are entered and valid.')
+        else:
+            return HttpResponse('Make sure all fields are entered and valid.')
             
        
     else:
@@ -105,3 +118,59 @@ def reply_contacts(request, pk):
         context = {'form': form, 'contact': contact}
     
         return render(request, 'profiles/reply-contacts.html', context)
+
+
+def subscribe(request):
+    
+    if request.method == "POST":
+        from_email = request.POST['newsletter']
+        subscription = Subscribe.objects.create(
+            email = from_email,
+        )
+        to_email = settings.EMAIL_HOST_USER      
+        from_email = subscription.email
+        subscribe_me = EmailMessage(subject="Newsletter Subscription", body='profiles/subscribe.html',
+                                            from_email=from_email, to=[to_email])
+        subscribe_me.send()
+        return redirect('home')
+
+
+
+# connection = mail.get_connection()  
+# connection.open()   
+def send_newsletter(request):
+    form = NewsletterForm()
+    recipients_mails = Subscribe.objects.all()
+    from_mail = settings.EMAIL_HOST_USER
+    
+    if request.method == "POST":
+        form = NewsletterForm(request.POST, request.FILES)
+        if form.is_valid():
+            letter = form.cleaned_data['letter']
+            attach = form.cleaned_data['attachment']
+            
+        newsletter = SendNewsletter.objects.create(
+            sender = request.user if request.user.is_superuser else request.user,
+            letter = letter,
+            attachment=attach
+        )
+        html_template = get_template('profiles/newsletter.html')
+        context = {'newsletter': newsletter}
+        html_content = html_template.render(context)
+        for email in  recipients_mails:
+            to_mail = email
+            mail = EmailMessage(
+                subject="Todays Newsletter", 
+                body=html_content,
+                from_email=from_mail, to=[to_mail]
+                )
+            mail.attach(attach.name, attach.read(), attach.content_type)
+            mail.content_subtype = "html"
+            # mail.send()
+            # connection.send_messages([mail])
+    
+    
+    context = {'form': form}
+    return render(request, 'profiles/send_newsletter.html', context)
+# connection.close()
+

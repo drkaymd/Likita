@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<article>
+    <div class="newsletter">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h3>Send Newsletter</h3>
+            <ul>
+                <li style="color: green">
+                    {% for field in form %}
+                    {% comment %} {{field.errors}} {% endcomment %}
+                    <label for="">{{field.label_tag}}</label>
+                    {{field}}
+                    {% if field.help_text %}
+                    <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                    {% endfor %}
+                </li>
+                <li>
+                    <input type="submit" value="Send Letter">
+                </li>
+            </ul>
+        </form>
+    </div>
+</article>
+
+{% endblock content %}
